@@ -195,7 +195,7 @@ func (s *MmctlE2ETestSuite) TestArchiveCommandCmdF() {
 			TeamId:      teamOfBasicUser.Id,
 			DisplayName: "command",
 			Description: "command",
-			Trigger:     api4.GenerateTestId(),
+			Trigger:     api4.GenerateTestID(),
 			URL:         "http://localhost:8000/example",
 			CreatorId:   s.th.BasicUser.Id,
 			Username:    s.th.BasicUser.Username,
@@ -207,7 +207,7 @@ func (s *MmctlE2ETestSuite) TestArchiveCommandCmdF() {
 		err := archiveCommandCmdF(c, &cobra.Command{}, []string{command.Id})
 		s.Require().Nil(err)
 		s.Require().Len(printer.GetLines(), 1)
-		s.Require().Equal(map[string]interface{}{"status": "ok"}, printer.GetLines()[0])
+		s.Require().Equal(map[string]any{"status": "ok"}, printer.GetLines()[0])
 		s.Require().Len(printer.GetErrorLines(), 0)
 
 		rcommand, err := s.th.App.GetCommand(command.Id)
@@ -231,7 +231,7 @@ func (s *MmctlE2ETestSuite) TestArchiveCommandCmdF() {
 			TeamId:      teamOfAdminUser.Id,
 			DisplayName: "command",
 			Description: "command",
-			Trigger:     api4.GenerateTestId(),
+			Trigger:     api4.GenerateTestID(),
 			URL:         "http://localhost:8000/example",
 			CreatorId:   s.th.SystemAdminUser.Id,
 			Username:    s.th.SystemAdminUser.Username,

@@ -14,8 +14,6 @@ const webpack = require('webpack');
 const {ModuleFederationPlugin} = require('webpack').container;
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 
-// const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-
 const packageJson = require('./package.json');
 
 const NPM_TARGET = process.env.npm_lifecycle_event;
@@ -23,7 +21,7 @@ const NPM_TARGET = process.env.npm_lifecycle_event;
 const targetIsRun = NPM_TARGET?.startsWith('run');
 const targetIsStats = NPM_TARGET === 'stats';
 const targetIsDevServer = NPM_TARGET?.startsWith('dev-server');
-const targetIsEslint = NPM_TARGET === 'check' || NPM_TARGET === 'fix' || process.env.VSCODE_CWD;
+const targetIsEslint = NPM_TARGET?.startsWith('check') || NPM_TARGET === 'fix' || process.env.VSCODE_CWD;
 
 const DEV = targetIsRun || targetIsStats || targetIsDevServer;
 
@@ -97,7 +95,7 @@ var config = {
                         loader: 'sass-loader',
                         options: {
                             sassOptions: {
-                                includePaths: ['src', 'src/sass'],
+                                loadPaths: ['src/sass'],
                             },
                         },
                     },
@@ -133,7 +131,7 @@ var config = {
             'mattermost-redux': 'packages/mattermost-redux/src',
             '@mui/styled-engine': '@mui/styled-engine-sc',
 
-            // This alias restricts single version of styled components acros all packages
+            // This alias restricts single version of styled components across all packages
             'styled-components': path.resolve(__dirname, '..', 'node_modules', 'styled-components'),
         },
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -149,7 +147,7 @@ var config = {
     target: 'web',
     plugins: [
         new webpack.ProvidePlugin({
-            process: 'process/browser',
+            process: 'process/browser.js',
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
@@ -159,6 +157,7 @@ var config = {
             filename: 'root.html',
             inject: 'head',
             template: 'src/root.html',
+            scriptLoading: 'blocking',
             meta: {
                 csp: {
                     'http-equiv': 'Content-Security-Policy',
@@ -191,7 +190,10 @@ var config = {
                 {from: 'src/images/cloud-laptop-error.png', to: 'images'},
                 {from: 'src/images/cloud-laptop-warning.png', to: 'images'},
                 {from: 'src/images/cloud-upgrade-person-hand-to-face.png', to: 'images'},
+                {from: 'src/images/payment_processing.png', to: 'images'},
+                {from: 'src/images/purchase_alert.png', to: 'images'},
                 {from: '../node_modules/pdfjs-dist/cmaps', to: 'cmaps'},
+                {from: 'src/components/initial_loading_screen/initial_loading_screen.css', to: 'css'},
             ],
         }),
 
@@ -261,13 +263,6 @@ var config = {
                 sizes: '96x96',
             }],
         }),
-
-        // Disabling this plugin until we come up with better bundle analysis ci
-        // new BundleAnalyzerPlugin({
-        //     analyzerMode: 'disabled',
-        //     generateStatsFile: true,
-        //     statsFilename: 'bundlestats.json',
-        // }),
     ],
 };
 
@@ -402,16 +397,21 @@ if (targetIsDevServer) {
         devtool: 'eval-cheap-module-source-map',
         devServer: {
             liveReload: true,
-            proxy: {
-
-                // Forward these requests to the server
-                '/api': {
+            proxy: [
+                {
+                    context: '/api',
                     ...proxyToServer,
                     ws: true,
                 },
-                '/plugins': proxyToServer,
-                '/static/plugins': proxyToServer,
-            },
+                {
+                    context: '/plugins',
+                    ...proxyToServer,
+                },
+                {
+                    context: '/static/plugins',
+                    ...proxyToServer,
+                },
+            ],
             port: 9005,
             devMiddleware: {
                 writeToDisk: false,

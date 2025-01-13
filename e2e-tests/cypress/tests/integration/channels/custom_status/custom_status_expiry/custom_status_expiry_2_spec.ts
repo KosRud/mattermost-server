@@ -104,22 +104,24 @@ describe('MM-T4064 Status expiry visibility', () => {
         // # Post a message in the channel
         cy.postMessage('Hello World!');
 
-        // # Hover on the custom status emoji present in the post header
-        cy.get('.post.current--user .post__header span.emoticon').trigger('mouseover');
+        // # Get the last post
+        cy.getLastPostId().then((postId) => {
+            // # Hover on the custom status emoji present in the post header
+            cy.get(`#post_${postId}`).find('.emoticon').should('exist').trigger('mouseenter');
 
-        // * Custom status tooltip should be visible
-        cy.get('#custom-status-tooltip').should('exist');
+            // * Custom status tooltip should be visible and contain the correct custom status expiry time
+            cy.findByRole('tooltip').should('exist').and('contain.text', expiresAt.format(expiryTimeFormat));
 
-        // * Tooltip should contain the correct custom status expiry time
-        cy.get('#custom-status-tooltip .custom-status-expiry time').should('have.text', expiresAt.format(expiryTimeFormat));
+            cy.get(`#post_${postId}`).find('.emoticon').trigger('mouseleave');
+        });
     });
 
     it('MM-T4064_7 should show custom status expiry time in the user popover', () => {
         // # Click on the post header of the last post by the current user and open profile popover
         cy.get('.post.current--user .post__header .user-popover').first().click();
-        cy.get('#user-profile-popover').should('exist');
+        cy.get('div.user-profile-popover').should('exist');
 
         // * Check if the profile popover contains custom status expiry time in the Status heading
-        cy.get('#user-profile-popover #user-popover-status .user-popover__subtitle time').should('have.text', expiresAt.format(expiryTimeFormat));
+        cy.get('div.user-profile-popover #user-popover-status .user-popover__subtitle time').should('have.text', expiresAt.format(expiryTimeFormat));
     });
 });

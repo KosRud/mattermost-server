@@ -11,7 +11,6 @@ import type {
     ReactNode,
     MouseEvent,
     KeyboardEvent,
-    SyntheticEvent,
 } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -23,8 +22,7 @@ import {openModal, closeModal} from 'actions/views/modals';
 import {getIsMobileView} from 'selectors/views/browser';
 
 import CompassDesignProvider from 'components/compass_design_provider';
-import OverlayTrigger from 'components/overlay_trigger';
-import Tooltip from 'components/tooltip';
+import WithTooltip from 'components/with_tooltip';
 
 import Constants, {A11yClassNames} from 'utils/constants';
 import {isKeyPressed} from 'utils/keyboard';
@@ -32,7 +30,6 @@ import {isKeyPressed} from 'utils/keyboard';
 import {MenuContext, useMenuContextValue} from './menu_context';
 import {MuiMenuStyled} from './menu_styled';
 
-const OVERLAY_TIME_DELAY = 500;
 const MENU_OPEN_ANIMATION_DURATION = 150;
 const MENU_CLOSE_ANIMATION_DURATION = 100;
 
@@ -40,15 +37,17 @@ type MenuButtonProps = {
     id: string;
     dateTestId?: string;
     'aria-label'?: string;
+    disabled?: boolean;
     class?: string;
+    as?: keyof JSX.IntrinsicElements;
     children: ReactNode;
 }
 
 type MenuButtonTooltipProps = {
-    id: string;
-    placement?: 'top' | 'bottom' | 'left' | 'right';
+    isVertical?: boolean;
     class?: string;
     text: string;
+    disabled?: boolean;
 }
 
 type MenuProps = {
@@ -63,11 +62,28 @@ type MenuProps = {
     width?: string;
 }
 
+const defaultAnchorOrigin = {vertical: 'bottom', horizontal: 'left'};
+const defaultTransformOrigin = {vertical: 'top', horizontal: 'left'};
+
+type VerticalOrigin = 'top' | 'center' | 'bottom';
+type HorizontalOrigin = 'left' | 'center' | 'right';
+
 interface Props {
     menuButton: MenuButtonProps;
     menuButtonTooltip?: MenuButtonTooltipProps;
     menu: MenuProps;
     children: ReactNode[];
+
+    // Use MUI Anchor Playgroup to try various anchorOrigin
+    // and transformOrigin values - https://mui.com/material-ui/react-popover/#anchor-playground
+    anchorOrigin?: {
+        vertical: VerticalOrigin;
+        horizontal: HorizontalOrigin;
+    };
+    transformOrigin?: {
+        vertical: VerticalOrigin;
+        horizontal: HorizontalOrigin;
+    };
 }
 
 /**
@@ -136,7 +152,7 @@ export function Menu(props: Props) {
         }
     }
 
-    function handleMenuButtonClick(event: SyntheticEvent<HTMLButtonElement>) {
+    function handleMenuButtonClick(event: MouseEvent) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -156,7 +172,7 @@ export function Menu(props: Props) {
                 }),
             );
         } else {
-            setAnchorElement(event.currentTarget);
+            setAnchorElement(event.currentTarget as HTMLElement);
         }
     }
 
@@ -167,39 +183,34 @@ export function Menu(props: Props) {
 
     // We construct the menu button so we can set onClick correctly here to support both web and mobile view
     function renderMenuButton() {
+        const MenuButtonComponent = props.menuButton?.as ?? 'button';
+
         const triggerElement = (
-            <button
+            <MenuButtonComponent
                 id={props.menuButton.id}
                 data-testid={props.menuButton.dateTestId}
                 aria-controls={props.menu.id}
                 aria-haspopup={true}
                 aria-expanded={isMenuOpen}
+                disabled={props.menuButton?.disabled ?? false}
                 aria-label={props.menuButton?.['aria-label'] ?? ''}
                 className={props.menuButton?.class ?? ''}
                 onClick={handleMenuButtonClick}
                 onMouseDown={handleMenuButtonMouseDown}
             >
                 {props.menuButton.children}
-            </button>
+            </MenuButtonComponent>
         );
 
         if (props.menuButtonTooltip && props.menuButtonTooltip.text && !isMobileView) {
             return (
-                <OverlayTrigger
-                    delayShow={OVERLAY_TIME_DELAY}
-                    placement={props?.menuButtonTooltip?.placement ?? 'top'}
-                    overlay={
-                        <Tooltip
-                            id={props.menuButtonTooltip.id}
-                            className={props.menuButtonTooltip?.class ?? ''}
-                        >
-                            {props.menuButtonTooltip.text}
-                        </Tooltip>
-                    }
-                    disabled={isMenuOpen}
+                <WithTooltip
+                    title={props.menuButtonTooltip.text}
+                    isVertical={props.menuButtonTooltip?.isVertical ?? true}
+                    disabled={isMenuOpen || props.menuButton?.disabled}
                 >
                     {triggerElement}
-                </OverlayTrigger>
+                </WithTooltip>
             );
         }
 
@@ -232,6 +243,8 @@ export function Menu(props: Props) {
                     onKeyDown={handleMenuKeyDown}
                     className={A11yClassNames.POPUP}
                     width={props.menu.width}
+                    anchorOrigin={props.anchorOrigin || defaultAnchorOrigin}
+                    transformOrigin={props.transformOrigin || defaultTransformOrigin}
                     disableAutoFocusItem={disableAutoFocusItem} // This is not anti-pattern, see handleMenuButtonMouseDown
                     MenuListProps={{
                         id: props.menu.id,

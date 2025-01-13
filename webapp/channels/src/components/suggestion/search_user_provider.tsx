@@ -17,7 +17,7 @@ import type {ResultsCallback} from './provider';
 import {SuggestionContainer} from './suggestion';
 import type {SuggestionProps} from './suggestion';
 
-const SearchUserSuggestion = React.forwardRef<HTMLDivElement, SuggestionProps<UserProfile>>((props, ref) => {
+export const SearchUserSuggestion = React.forwardRef<HTMLDivElement, SuggestionProps<UserProfile>>((props, ref) => {
     const {item} = props;
 
     const username = item.username;
@@ -36,7 +36,6 @@ const SearchUserSuggestion = React.forwardRef<HTMLDivElement, SuggestionProps<Us
         sharedIcon = (
             <SharedUserIndicator
                 className='mention__shared-user-icon'
-                withTooltip={true}
             />
         );
     }

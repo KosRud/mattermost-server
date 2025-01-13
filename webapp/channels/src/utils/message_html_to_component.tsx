@@ -10,8 +10,8 @@ import AtSumOfMembersMention from 'components/at_sum_members_mention';
 import CodeBlock from 'components/code_block/code_block';
 import LatexBlock from 'components/latex_block';
 import LatexInline from 'components/latex_inline';
-import LinkTooltip from 'components/link_tooltip/link_tooltip';
 import MarkdownImage from 'components/markdown_image';
+import PluginLinkTooltip from 'components/plugin_link_tooltip';
 import PostEmoji from 'components/post_emoji';
 import PostEditedIndicator from 'components/post_view/post_edited_indicator';
 
@@ -35,6 +35,13 @@ export type Options = Partial<{
     images: boolean;
     atPlanMentions: boolean;
     channelId: string;
+
+    /**
+     * Whether or not the AtMention component should attempt to fetch at-mentioned users if none can be found for
+     * something that looks like an at-mention. This defaults to false because the web app currently loads at-mentioned
+     * users automatically for all posts.
+     */
+    fetchMissingUsers: boolean;
 }>
 
 type ProcessingInstruction = {
@@ -100,18 +107,14 @@ export function messageHtmlToComponent(html: string, options: Options = {}) {
     ];
 
     if (options.hasPluginTooltips) {
-        const hrefAttrib = 'href';
         processingInstructions.push({
-            replaceChildren: true,
-            shouldProcessNode: (node: any) => node.type === 'tag' && node.name === 'a' && node.attribs[hrefAttrib],
+            replaceChildren: false,
+            shouldProcessNode: (node: any) => node.type === 'tag' && node.name === 'a' && node.attribs.href,
             processNode: (node: any, children: any) => {
                 return (
-                    <LinkTooltip
-                        href={node.attribs[hrefAttrib]}
-                        attributes={node.attribs}
-                    >
+                    <PluginLinkTooltip nodeAttributes={node.attribs}>
                         {children}
-                    </LinkTooltip>
+                    </PluginLinkTooltip>
                 );
             },
         });
@@ -129,10 +132,10 @@ export function messageHtmlToComponent(html: string, options: Options = {}) {
                 const callAtMention = (
                     <AtMention
                         mentionName={mentionName}
-                        hasMention={true}
                         disableHighlight={!mentionHighlight}
                         disableGroupHighlight={disableGroupHighlight}
                         channelId={options.channelId}
+                        fetchMissingUsers={options.fetchMissingUsers}
                     >
                         {children}
                     </AtMention>
@@ -182,10 +185,10 @@ export function messageHtmlToComponent(html: string, options: Options = {}) {
         processingInstructions.push({
             replaceChildren: true,
             shouldProcessNode: (node: any) => node.attribs && node.attribs[emojiAttrib],
-            processNode: (node: any) => {
+            processNode: (node: any, children: any) => {
                 const emojiName = node.attribs[emojiAttrib];
 
-                return <PostEmoji name={emojiName}/>;
+                return <PostEmoji name={emojiName}>{children}</PostEmoji>;
             },
         });
     }

@@ -29,6 +29,15 @@ type Context struct {
 
 // LogAuditRec logs an audit record using default LevelAPI.
 func (c *Context) LogAuditRec(rec *audit.Record) {
+	// finish populating the context data, in case the session wasn't available during MakeAuditRecord
+	// (e.g., api4/user.go login)
+	if rec.Actor.UserId == "" {
+		rec.Actor.UserId = c.AppContext.Session().UserId
+	}
+	if rec.Actor.SessionId == "" {
+		rec.Actor.SessionId = c.AppContext.Session().Id
+	}
+
 	c.LogAuditRecWithLevel(rec, app.LevelAPI)
 }
 
@@ -62,14 +71,14 @@ func (c *Context) MakeAuditRecord(event string, initialStatus string) *audit.Rec
 			IpAddress:     c.AppContext.IPAddress(),
 			XForwardedFor: c.AppContext.XForwardedFor(),
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			audit.KeyAPIPath:   c.AppContext.Path(),
 			audit.KeyClusterID: c.App.GetClusterId(),
 		},
 		EventData: audit.EventData{
-			Parameters:  map[string]interface{}{},
-			PriorState:  map[string]interface{}{},
-			ResultState: map[string]interface{}{},
+			Parameters:  map[string]any{},
+			PriorState:  map[string]any{},
+			ResultState: map[string]any{},
 			ObjectType:  "",
 		},
 	}
@@ -453,6 +462,17 @@ func (c *Context) RequireAppId() *Context {
 	return c
 }
 
+func (c *Context) RequireOutgoingOAuthConnectionId() *Context {
+	if c.Err != nil {
+		return c
+	}
+
+	if !model.IsValidId(c.Params.OutgoingOAuthConnectionID) {
+		c.SetInvalidURLParam("outgoing_oauth_connection_id")
+	}
+	return c
+}
+
 func (c *Context) RequireFileId() *Context {
 	if c.Err != nil {
 		return c
@@ -661,6 +681,17 @@ func (c *Context) RequireRoleId() *Context {
 
 	if !model.IsValidId(c.Params.RoleId) {
 		c.SetInvalidURLParam("role_id")
+	}
+	return c
+}
+
+func (c *Context) RequireFieldId() *Context {
+	if c.Err != nil {
+		return c
+	}
+
+	if !model.IsValidId(c.Params.FieldId) {
+		c.SetInvalidURLParam("field_id")
 	}
 	return c
 }

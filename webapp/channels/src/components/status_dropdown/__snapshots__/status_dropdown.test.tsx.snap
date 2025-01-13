@@ -21,7 +21,6 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -50,8 +49,8 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -60,16 +59,27 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -83,7 +93,7 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -94,15 +104,16 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -113,16 +124,20 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -152,14 +167,14 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -168,15 +183,14 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -208,6 +222,7 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -218,17 +233,22 @@ exports[`components/StatusDropdown should match snapshot in default state 1`] = 
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -255,7 +275,6 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -284,8 +303,8 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -294,9 +313,20 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
@@ -332,10 +362,8 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
           <CustomStatusText
             className="custom_status__text"
             text="In a meeting"
-            tooltipDirection="bottom"
           />
           <Text
-            color="disabled"
             margin="none"
           />
           <div
@@ -343,25 +371,12 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
             onClick={[Function]}
             onTouchEnd={[Function]}
           >
-            <OverlayTrigger
-              defaultOverlayShown={false}
-              delayShow={400}
-              overlay={
-                <Tooltip
-                  id="InputClearTooltip"
-                >
-                  <Memo(MemoizedFormattedMessage)
-                    defaultMessage="Clear"
-                    id="input.clear"
-                  />
-                </Tooltip>
-              }
-              placement="left"
-              trigger={
-                Array [
-                  "hover",
-                  "focus",
-                ]
+            <WithTooltip
+              title={
+                <Memo(MemoizedFormattedMessage)
+                  defaultMessage="Clear"
+                  id="input.clear"
+                />
               }
             >
               <span
@@ -372,7 +387,7 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
                   className="icon icon-close-circle"
                 />
               </span>
-            </OverlayTrigger>
+            </WithTooltip>
           </div>
         </span>
         <Memo(ExpiryTime)
@@ -384,7 +399,7 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -398,7 +413,7 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -409,15 +424,16 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -428,16 +444,20 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -467,14 +487,14 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -483,15 +503,14 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -523,6 +542,7 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -533,17 +553,22 @@ exports[`components/StatusDropdown should match snapshot with custom status and 
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -570,7 +595,6 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -599,8 +623,8 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -609,16 +633,27 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemToggleModalRedux
-        ariaLabel="Set a Custom Status"
+        ariaLabel="Set a custom status"
         className="MenuItem__primary-text custom_status__row"
         dialogType={[Function]}
         id="status-menu-custom-status"
@@ -638,20 +673,18 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
           <CustomStatusText
             className="custom_status__text"
             text=""
-            tooltipDirection="bottom"
           />
           <Text
-            color="disabled"
             margin="none"
           >
-            Set a Custom Status
+            Set a custom status
           </Text>
         </span>
       </MenuItemToggleModalRedux>
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -665,7 +698,7 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -676,15 +709,16 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -695,16 +729,20 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -734,14 +772,14 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -750,15 +788,14 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -790,6 +827,7 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -800,17 +838,22 @@ exports[`components/StatusDropdown should match snapshot with custom status enab
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -837,7 +880,6 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -866,8 +908,8 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -876,16 +918,27 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemToggleModalRedux
-        ariaLabel="Set a Custom Status"
+        ariaLabel="Set a custom status"
         className="MenuItem__primary-text custom_status__row"
         dialogType={[Function]}
         id="status-menu-custom-status"
@@ -905,20 +958,18 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
           <CustomStatusText
             className="custom_status__text"
             text=""
-            tooltipDirection="bottom"
           />
           <Text
-            color="disabled"
             margin="none"
           >
-            Set a Custom Status
+            Set a custom status
           </Text>
         </span>
       </MenuItemToggleModalRedux>
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -932,7 +983,7 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -943,15 +994,16 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -962,16 +1014,20 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -1001,14 +1057,14 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -1017,15 +1073,14 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1057,6 +1112,7 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -1067,17 +1123,22 @@ exports[`components/StatusDropdown should match snapshot with custom status expi
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -1104,7 +1165,6 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -1133,8 +1193,8 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -1143,16 +1203,27 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemToggleModalRedux
-        ariaLabel="Set a Custom Status"
+        ariaLabel="Set a custom status"
         className="MenuItem__primary-text custom_status__row"
         dialogType={[Function]}
         id="status-menu-custom-status"
@@ -1172,13 +1243,11 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
           <CustomStatusText
             className="custom_status__text"
             text=""
-            tooltipDirection="bottom"
           />
           <Text
-            color="disabled"
             margin="none"
           >
-            Set a Custom Status
+            Set a custom status
           </Text>
           <PulsatingDot />
         </span>
@@ -1186,7 +1255,7 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1200,7 +1269,7 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1211,15 +1280,16 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -1230,16 +1300,20 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -1269,14 +1343,14 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -1285,15 +1359,14 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1325,6 +1398,7 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -1335,17 +1409,22 @@ exports[`components/StatusDropdown should match snapshot with custom status puls
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -1372,7 +1451,6 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <Memo(Avatar)
       size="sm"
@@ -1409,8 +1487,8 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -1419,16 +1497,27 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1442,7 +1531,7 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1453,15 +1542,16 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -1472,16 +1562,20 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -1511,14 +1605,14 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -1527,15 +1621,14 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1567,6 +1660,7 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -1577,17 +1671,22 @@ exports[`components/StatusDropdown should match snapshot with profile picture UR
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -1614,7 +1713,6 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -1643,8 +1741,8 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -1653,16 +1751,27 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1676,7 +1785,7 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1687,15 +1796,16 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -1706,16 +1816,20 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -1745,14 +1859,14 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -1761,15 +1875,14 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1801,6 +1914,7 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -1811,17 +1925,22 @@ exports[`components/StatusDropdown should match snapshot with status dropdown op
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -1848,7 +1967,6 @@ exports[`components/StatusDropdown should not show clear status button when cust
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -1877,8 +1995,8 @@ exports[`components/StatusDropdown should not show clear status button when cust
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -1887,16 +2005,27 @@ exports[`components/StatusDropdown should not show clear status button when cust
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemToggleModalRedux
-        ariaLabel="Set a Custom Status"
+        ariaLabel="Set a custom status"
         className="MenuItem__primary-text custom_status__row"
         dialogType={[Function]}
         id="status-menu-custom-status"
@@ -1916,20 +2045,18 @@ exports[`components/StatusDropdown should not show clear status button when cust
           <CustomStatusText
             className="custom_status__text"
             text=""
-            tooltipDirection="bottom"
           />
           <Text
-            color="disabled"
             margin="none"
           >
-            Set a Custom Status
+            Set a custom status
           </Text>
         </span>
       </MenuItemToggleModalRedux>
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1943,7 +2070,7 @@ exports[`components/StatusDropdown should not show clear status button when cust
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -1954,15 +2081,16 @@ exports[`components/StatusDropdown should not show clear status button when cust
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -1973,16 +2101,20 @@ exports[`components/StatusDropdown should not show clear status button when cust
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -2012,14 +2144,14 @@ exports[`components/StatusDropdown should not show clear status button when cust
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -2028,15 +2160,14 @@ exports[`components/StatusDropdown should not show clear status button when cust
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -2068,6 +2199,7 @@ exports[`components/StatusDropdown should not show clear status button when cust
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -2078,17 +2210,22 @@ exports[`components/StatusDropdown should not show clear status button when cust
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
@@ -2115,7 +2252,6 @@ exports[`components/StatusDropdown should show clear status button when custom s
       }
       onClick={[Function]}
       showTooltip={true}
-      tooltipDirection="bottom"
     />
     <div
       className="status"
@@ -2144,8 +2280,8 @@ exports[`components/StatusDropdown should show clear status button when custom s
           Nev Aa
         </Text>
         <Text
-          className=""
-          color="disabled"
+          className="contrast"
+          color="inherit"
           margin="none"
         >
           @undefined
@@ -2154,9 +2290,20 @@ exports[`components/StatusDropdown should show clear status button when custom s
     </Memo(MenuHeader)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="out of office"
+        ariaLabel="Out of office"
         extraText="Automatic Replies are enabled"
+        icon={
+          <CancelIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
+          />
+        }
         onClick={[Function]}
+        rightDecorator={
+          <CheckIcon
+            color="var(--button-bg)"
+            size={16}
+          />
+        }
         show={false}
         text="Out of office"
       />
@@ -2192,10 +2339,8 @@ exports[`components/StatusDropdown should show clear status button when custom s
           <CustomStatusText
             className="custom_status__text"
             text="In a meeting"
-            tooltipDirection="bottom"
           />
           <Text
-            color="disabled"
             margin="none"
           />
           <div
@@ -2203,25 +2348,12 @@ exports[`components/StatusDropdown should show clear status button when custom s
             onClick={[Function]}
             onTouchEnd={[Function]}
           >
-            <OverlayTrigger
-              defaultOverlayShown={false}
-              delayShow={400}
-              overlay={
-                <Tooltip
-                  id="InputClearTooltip"
-                >
-                  <Memo(MemoizedFormattedMessage)
-                    defaultMessage="Clear"
-                    id="input.clear"
-                  />
-                </Tooltip>
-              }
-              placement="left"
-              trigger={
-                Array [
-                  "hover",
-                  "focus",
-                ]
+            <WithTooltip
+              title={
+                <Memo(MemoizedFormattedMessage)
+                  defaultMessage="Clear"
+                  id="input.clear"
+                />
               }
             >
               <span
@@ -2232,7 +2364,7 @@ exports[`components/StatusDropdown should show clear status button when custom s
                   className="icon icon-close-circle"
                 />
               </span>
-            </OverlayTrigger>
+            </WithTooltip>
           </div>
         </span>
         <Memo(ExpiryTime)
@@ -2244,7 +2376,7 @@ exports[`components/StatusDropdown should show clear status button when custom s
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
       <MenuItemAction
-        ariaLabel="online"
+        ariaLabel="Online"
         icon={
           <StatusIcon
             className="status-icon"
@@ -2258,7 +2390,7 @@ exports[`components/StatusDropdown should show clear status button when custom s
         text="Online"
       />
       <MenuItemAction
-        ariaLabel="away"
+        ariaLabel="Away"
         icon={
           <StatusIcon
             className="status-icon"
@@ -2269,15 +2401,16 @@ exports[`components/StatusDropdown should show clear status button when custom s
         onClick={[Function]}
         rightDecorator={
           <CheckIcon
-            color="var(--semantic-color-success)"
+            color="var(--button-bg)"
             size={16}
           />
         }
         show={true}
         text="Away"
       />
-      <SubMenuItem
-        ariaLabel="do not disturb. disables desktop, email and push notifications"
+      <injectIntl(SubMenuItem)
+        action={[Function]}
+        ariaLabel="Do not disturb. Disables all notifications"
         direction="left"
         extraText="Disables all notifications"
         icon={
@@ -2288,16 +2421,20 @@ exports[`components/StatusDropdown should show clear status button when custom s
         }
         id="status-menu-dnd"
         openUp={false}
-        renderSelected={true}
         rightDecorator={false}
-        show={true}
         subMenu={
           Array [
             Object {
               "direction": "right",
               "id": "dndSubMenu-header",
               "isHeader": true,
-              "text": "Disable notifications until:",
+              "text": "Clear after:",
+            },
+            Object {
+              "action": [Function],
+              "direction": "right",
+              "id": "dndTime-dont_clear",
+              "text": "Don't clear",
             },
             Object {
               "action": [Function],
@@ -2327,14 +2464,14 @@ exports[`components/StatusDropdown should show clear status button when custom s
                   className="dndTime-tomorrow_timestamp"
                 >
                   <FormattedDate
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                     weekday="short"
                   />
                   , 
                   <FormattedTime
                     hour12={true}
                     timeStyle="short"
-                    value={2021-11-03T22:48:57.000Z}
+                    value={2021-11-03T09:00:57.000Z}
                   />
                 </span>
               </React.Fragment>,
@@ -2343,15 +2480,14 @@ exports[`components/StatusDropdown should show clear status button when custom s
               "action": [Function],
               "direction": "right",
               "id": "dndTime-custom",
-              "text": "Custom",
+              "text": "Choose date and time",
             },
           ]
         }
-        subMenuClass="pl-4"
         text="Do not disturb"
       />
       <MenuItemAction
-        ariaLabel="offline"
+        ariaLabel="Offline"
         icon={
           <StatusIcon
             className="status-icon"
@@ -2383,6 +2519,7 @@ exports[`components/StatusDropdown should show clear status button when custom s
         }
         icon={
           <AccountOutlineIcon
+            color="rgba(var(--center-channel-color-rgb), 0.56)"
             size={16}
           />
         }
@@ -2393,17 +2530,22 @@ exports[`components/StatusDropdown should show clear status button when custom s
       />
     </Memo(MenuGroup)>
     <Memo(MenuGroup)>
-      <MenuItemAction
-        icon={
-          <ExitToAppIcon
-            size={16}
-          />
-        }
-        id="logout"
-        onClick={[Function]}
-        show={true}
-        text="Log Out"
-      />
+      <span
+        className="logout__icon"
+      >
+        <MenuItemAction
+          icon={
+            <ExitToAppIcon
+              color="rgba(var(--center-channel-color-rgb), 0.56)"
+              size={16}
+            />
+          }
+          id="logout"
+          onClick={[Function]}
+          show={true}
+          text="Log Out"
+        />
+      </span>
     </Memo(MenuGroup)>
   </Menu>
 </MenuWrapper>
