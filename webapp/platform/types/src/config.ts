@@ -168,6 +168,9 @@ export type ClientConfig = {
     PostEditTimeLimit: string;
     PrivacyPolicyLink: string;
     ReportAProblemLink: string;
+    ReportAProblemType: string;
+    ReportAProblemMail: string;
+    AllowDownloadLogs: string;
     RequireEmailVerification: string;
     RestrictDirectMessage: string;
     RunJobs: string;
@@ -403,6 +406,8 @@ export type ServiceSettings = {
     EnableDesktopLandingPage: boolean;
     MaximumURLLength: number;
     ScheduledPosts: boolean;
+    EnableWebHubChannelIteration: boolean;
+    FrameAncestors: string;
 };
 
 export type TeamSettings = {
@@ -482,6 +487,7 @@ export type ExperimentalAuditSettings = {
     FileCompress: boolean;
     FileMaxQueueSize: number;
     AdvancedLoggingJSON: Record<string, any>;
+    Certificate: string;
 };
 
 export type NotificationLogSettings = {
@@ -624,6 +630,9 @@ export type SupportSettings = {
     AboutLink: string;
     HelpLink: string;
     ReportAProblemLink: string;
+    ReportAProblemType: string;
+    ReportAProblemMail: string;
+    AllowDownloadLogs: boolean;
     ForgotPasswordLink: string;
     SupportEmail: string;
     CustomTermsOfServiceEnabled: boolean;
@@ -771,6 +780,9 @@ export type NativeAppSettings = {
     AndroidAppDownloadLink: string;
     IosAppDownloadLink: string;
     MobileExternalBrowser: boolean;
+    MobileEnableBiometrics: boolean;
+    MobilePreventScreenCapture: boolean;
+    MobileJailbreakProtection: boolean;
 };
 
 export type ClusterSettings = {
@@ -793,6 +805,7 @@ export type MetricsSettings = {
     ListenAddress: string;
     EnableClientMetrics: boolean;
     EnableNotificationMetrics: boolean;
+    ClientSideUserIds: string[];
 };
 
 export type ExperimentalSettings = {
@@ -819,6 +832,7 @@ export type CacheSettings = {
     RedisAddress: string;
     RedisPassword: string;
     RedisDB: number;
+    RedisCachePrefix: string;
     DisableClientCache: boolean;
 };
 
@@ -840,6 +854,7 @@ export type ElasticsearchSettings = {
     AggregatePostsAfterDays: number;
     PostsAggregatorJobStartTime: string;
     IndexPrefix: string;
+    GlobalSearchPrefix: string;
     LiveIndexingBatchSize: number;
     BatchSize: number;
     RequestTimeoutSeconds: number;
@@ -958,6 +973,11 @@ export type ExportSettings = {
     RetentionDays: number;
 };
 
+export type AccessControlSettings = {
+    EnableAttributeBasedAccessControl: boolean;
+    EnableChannelScopeAccessControl: boolean;
+};
+
 export type AdminConfig = {
     ServiceSettings: ServiceSettings;
     TeamSettings: TeamSettings;
@@ -1003,6 +1023,7 @@ export type AdminConfig = {
     ExportSettings: ExportSettings;
     WranglerSettings: WranglerSettings;
     ConnectedWorkspacesSettings: ConnectedWorkspacesSettings;
+    AccessControlSettings: AccessControlSettings;
 };
 
 export type ReplicaLagSetting = {
